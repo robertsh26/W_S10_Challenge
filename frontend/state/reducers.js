@@ -23,11 +23,15 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         sizeFilter: action.payload,
       };
-    case CREATE_ORDER:
-      return {
-        ...state,
-        orders: [...state.orders, action.payload]
-      };
+      case CREATE_ORDER:
+        return {
+          ...state,
+          orders: [...state.orders, action.payload], // Add the new order to the orders array
+          orderStatus: {
+            isLoading: true, // Set isLoading to true when order creation begins
+            error: null, // Reset error to null
+          }
+        };
     case ORDER_CREATION_SUCCESS:
       return {
         ...state,
