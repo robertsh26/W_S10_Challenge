@@ -23,7 +23,7 @@ export default function OrderList() {
         filteredOrders.map((order) => (
           <li key={order?.id}>
             <div>
-              {order?.customer} ordered a size {order?.size} with  {order?.toppings?.length} topping{order?.toppings?.length === 1 ? '' : 's'}
+            {order?.customer} ordered a size {order?.size} with {order?.toppings ? (order?.toppings?.length === 0 ? 'no toppings' : `${order?.toppings?.length} topping${order?.toppings?.length === 1 ? '' : 's'}`) : 'no toppings'}
             </div>
           </li>
           ))
