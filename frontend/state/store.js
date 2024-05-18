@@ -1,14 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
-
-const exampleReducer = (state = { count: 0 }) => {
-  return state
-}
+import rootReducer from './reducers'
 
 export const resetStore = () => configureStore({
-  reducer: {
-    example: exampleReducer,
-    // add your reducer(s) here
-  },
+  reducer: rootReducer,
   middleware: getDefault => getDefault().concat(
     // if using RTK Query for your networking: add your middleware here
     // if using Redux Thunk for your networking: you can ignore this

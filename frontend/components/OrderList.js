@@ -1,35 +1,50 @@
-import React from 'react'
+// src/components/OrderList.js
+
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchOrders, setSizeFilter } from '../state/actions';
 
 export default function OrderList() {
-  const orders = []
+  const dispatch = useDispatch();
+  const orders = useSelector((state) => state.orders);
+  const sizeFilter = useSelector((state) => state.sizeFilter);
+
+  useEffect(() => {
+    dispatch(fetchOrders());
+  }, [dispatch]);
+
+  const filteredOrders = orders.filter((order) => sizeFilter === 'All' || order.size === sizeFilter);
+
   return (
     <div id="orderList">
       <h2>Pizza Orders</h2>
       <ol>
-        {
-          orders.map(() => {
-            return (
-              <li key={1}>
-                <div>
-                  order details here
-                </div>
-              </li>
-            )
-          })
-        }
+      {
+        filteredOrders.map((order) => (
+          <li key={order?.id}>
+            <div>
+              {order?.customer} ordered a size {order?.size} with  {order?.toppings?.length} topping{order?.toppings?.length === 1 ? '' : 's'}
+            </div>
+          </li>
+          ))
+      }
       </ol>
       <div id="sizeFilters">
         Filter by size:
-        {
-          ['All', 'S', 'M', 'L'].map(size => {
-            const className = `button-filter${size === 'All' ? ' active' : ''}`
-            return <button
+        {['All', 'S', 'M', 'L'].map((size) => {
+          const className = `button-filter${size === sizeFilter ? ' active' : ''}`;
+          return (
+            <button
               data-testid={`filterBtn${size}`}
               className={className}
-              key={size}>{size}</button>
-          })
-        }
+              key={size}
+              onClick={() => dispatch(setSizeFilter(size))}
+            >
+              {size}
+            </button>
+          );
+        })}
       </div>
     </div>
-  )
+  );
 }
