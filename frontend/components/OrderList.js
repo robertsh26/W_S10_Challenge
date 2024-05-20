@@ -19,15 +19,18 @@ export default function OrderList() {
     <div id="orderList">
       <h2>Pizza Orders</h2>
       <ol>
-      {
-        filteredOrders.map((order) => (
-          <li key={order?.id}>
-            <div>
-            {order?.customer} ordered a size {order?.size} with {order?.toppings ? (order?.toppings?.length === 0 ? 'no toppings' : `${order?.toppings?.length} topping${order?.toppings?.length === 1 ? '' : 's'}`) : 'no toppings'}
-            </div>
-          </li>
-          ))
-      }
+        {filteredOrders.map((order) => (
+          order && order.id && (
+            <li key={order.id}>
+              <div>
+                {order.customer} ordered a size {order.size} with{' '}
+                {order.toppings && order.toppings.length > 0
+                  ? `${order.toppings.length} topping${order.toppings.length > 1 ? 's' : ''}`
+                  : 'no toppings'}
+              </div>
+            </li>
+          )
+        ))}
       </ol>
       <div id="sizeFilters">
         Filter by size:

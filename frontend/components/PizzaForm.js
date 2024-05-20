@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrder, orderCreationFailure } from '../state/actions';
 
@@ -28,11 +28,14 @@ export default function PizzaForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
   
+    
     // Check if fullName is provided
     if (!formState.fullName) {
       dispatch(orderCreationFailure("fullName is required"));
       return;
     }
+
+    
   
     // Check if size is provided and valid
     if (!formState.size || !['S', 'M', 'L'].includes(formState.size)) {
@@ -49,11 +52,18 @@ export default function PizzaForm() {
     const orderData = {
       fullName: formState.fullName,
       size: formState.size,
-      toppings,
+      toppings: toppings,
     };
-  
+    
     dispatch(createOrder(orderData));
+    
   };
+
+  useEffect(() => {
+    if (!orderStatus.isLoading && !orderStatus.error) {
+      setFormState(initialFormState); // Reset form state upon successful order creation
+    }
+  }, [orderStatus]);
 
   return (
     <form onSubmit={handleSubmit}>
